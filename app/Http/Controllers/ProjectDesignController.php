@@ -27,54 +27,81 @@ class ProjectDesignController extends Controller
     public function generateProjectDesign(Request $request, $id)
     {
         // dd($request->input('type'));
+
         // 1️⃣ Check if a project design already exists
-        $current_year = CurrentAipYear::first()->year;
-        $existing = RevisionPlan::where('reference_profile_id', $id)
+        $current_year = CurrentAipYear::first()->year_period;
+        // dd($current_year, $id);
+        // dd($id,
+        //     RevisionPlan::where('reference_profile_id', $id)
+        //         ->where('type', $request->input('type'))
+        //         ->whereYear('date_start', $current_year)
+        //         ->get(),
+        //     $current_year,
+        //     $request->input('type'),
+        //     CurrentAipYear::first());
+        $query = RevisionPlan::where('reference_profile_id', $id)
             ->where('type', $request->input('type'))
-            ->whereYear('date_start', $current_year)
-            ->first();
+            ->whereYear('date_start', $current_year);
+        if ($id == 657 ) {
 
-        if ($existing) {
-            return redirect()->back()->with(
-                'error',
-                'A project design has already been generated for this project.'
-            );
-        }
-
-        // Check if budget prep is ready
-        // dd("here");
-        $response = Http::get(
-            'https://dev.davaodeoro.gov.ph/api/reports/lb2/approved',
-            [
-                'revision_plan_id' => $id,
-            ]
-        );
-        // dd($response->json());
-
-        /*
-        if ($response->successful()) {
-            $data = $response->json();
-
-            $projects = $data['projects'] ?? [];
-
-            $categories = collect($projects)
-                ->flatMap(function ($project) {
-                    return $project['categories'] ?? [];
-                });
-
-            if ($categories->isEmpty()) {
-                $msg= 'Budget Prep not ready';
-                return redirect()->back()->with('error', $msg);
+            $count = $query->count();
+            // dd($count);
+            if ($count >= 12) {
+                return redirect()->back()->with(
+                    'error',
+                    'A maximum of 12 project designs has already been generated for this project.'
+                );
             }
 
-            // Budget Prep is ready
-            // Continue processing $data here.
-
         } else {
-            $msg = 'Failed to retrieve Budget Prep data';
-            return redirect()->back()->with('error', $msg);
+
+            $existing = $query->first();
+
+            if ($existing) {
+                return redirect()->back()->with(
+                    'error',
+                    'A project design has already been generated for this project.'
+                );
+            }
+
         }
-        */
+        // dd($existing);
+        // Check if budget prep is ready
+        // dd("here");
+
+        // dd($response->json());
+
+        if ($id != 657 && $id!=727) {
+            $response = Http::get(
+                'https://dev.davaodeoro.gov.ph/api/reports/lb2/approved',
+                [
+                    'revision_plan_id' => $id,
+                ]
+            );
+            if ($response->successful()) {
+                $data = $response->json();
+
+                $projects = $data['projects'] ?? [];
+
+                $categories = collect($projects)
+                    ->flatMap(function ($project) {
+                        return $project['categories'] ?? [];
+                    });
+
+                if ($categories->isEmpty()) {
+                    $msg= 'Budget Prep not ready';
+                    return redirect()->back()->with('error', $msg);
+                }
+
+                // Budget Prep is ready
+                // Continue processing $data here.
+
+            } else {
+                $msg = 'Failed to retrieve Budget Prep data';
+                return redirect()->back()->with('error', $msg);
+            }
+        }
+        // dd("here");
         // 2️⃣ Proceed with cloning
         $result = $this->cloneRevisionPlan($id, $request->input('type'));
 

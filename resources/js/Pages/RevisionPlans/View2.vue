@@ -3829,14 +3829,14 @@ export default {
             const selection = window.getSelection();
 
             if (!selection || selection.rangeCount === 0) {
-                return null;
+                return;
             }
 
             const range = selection.getRangeAt(0);
             const selectedText = selection.toString();
 
             if (!selectedText) {
-                return null;
+                return;
             }
 
             // Get the full text (flattened) from the div
