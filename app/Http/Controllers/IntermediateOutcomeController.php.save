@@ -1,0 +1,116 @@
+<?php
+
+namespace App\Http\Controllers;
+
+<<<<<<< HEAD
+use App\models\IntermediateOutcome;
+//=======
+use App\Models\IntermediateOutcome;
+>>>>>>> 88fee40ff17dd2494b0984f5ac1061fd4983677d
+use App\Models\Outcome;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class IntermediateOutcomeController extends Controller
+{
+    public function __construct(IntermediateOutcome $model)
+    {
+        //$this->middleware(['auth','verified']);
+        $this->model = $model;
+    }
+    public function index(Request $request, $id)
+    {
+        $data = $this->model
+                ->where('idoutcome',$id)
+                ->orderBy('created_at', 'desc')
+                ->paginate(10)
+                ->withQueryString();
+
+
+        return inertia('InterOutcome/Index',[
+            "data"=>$data,
+            "idoutcome"=>$id,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
+    }
+
+    public function create(Request $request, $id)
+    {
+        $outcomes=Outcome::get();
+        return inertia('InterOutcome/Create',[
+            'idoutcome'=>$id,
+            'outcomes'=>$outcomes,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $attributes = $request->validate([
+            'io_desc' => 'required',
+            'idoutcome' => 'required',
+        ]);
+        //dd($attributes);
+        $this->model->create($attributes);
+        $request->pass='';
+        return redirect('/inter_outcome/'.$request->idoutcome)
+                ->with('message','Outcome added');
+    }
+
+<<<<<<< HEAD
+    public function show(IntermediateOutcome $intermediateOutCome)
+=======
+    public function show(IntermediateOutcome $IntermediateOutcome)
+>>>>>>> 88fee40ff17dd2494b0984f5ac1061fd4983677d
+    {
+        //
+    }
+
+    public function edit(Request $request, $id, $idoutcome)
+    {
+        $outcomes=Outcome::get();
+        $data = $this->model->where('id', $id)->first([
+            'id',
+            'io_desc',
+            'idoutcome'
+        ]);
+
+        return inertia('InterOutcome/Create', [
+            "editData" => $data,
+            "outcomes"=>$outcomes,
+            "idoutcome"=> $idoutcome,
+            'can'=>[
+                'can_access_validation' => Auth::user()->can('can_access_validation',User::class),
+                'can_access_indicators' => Auth::user()->can('can_access_indicators',User::class)
+            ],
+        ]);
+    }
+
+    public function update(Request $request)
+    {
+        $data = $this->model->findOrFail($request->id);
+        //dd($request->plan_period);
+        $data->update([
+            'io_desc'=>$request->io_desc,
+            'idoutcome'=>$request->idoutcome
+        ]);
+
+        return redirect('/inter_outcome/'.$request->idoutcome)
+                ->with('message','Outcome updated');
+    }
+
+    public function destroy(Request $request, $id, $idoutcome)
+    {
+        //dd('delete me!'.$id);
+        $data = $this->model->findOrFail($id);
+        $data->delete();
+        //dd($request->raao_id);
+        return redirect('/inter_outcome/'.$idoutcome)->with('warning', 'Intermediate Outcome deleted');
+    }
+}

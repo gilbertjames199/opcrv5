@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class AddColumnsToMajorFinalOutputsLaravel extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('major_final_outputs', function (Blueprint $table) {
+            $table->string('from_excel')->nullable()->comment('1 means from excel');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('major_final_outputs_laravel', function (Blueprint $table) {
+            //
+        });
+    }
+}

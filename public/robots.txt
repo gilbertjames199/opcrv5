@@ -1,0 +1,61 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /login
+Disallow: /register
+Disallow: /password/
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /config/
+Disallow: /storage/
+Disallow: /vendor/
+
+# Block all gambling paths (from your nginx list)
+Disallow: /slotclub/
+Disallow: /spinjack/
+Disallow: /bonusesr/
+Disallow: /betmania/
+Disallow: /casinoet/
+Disallow: /jackspot/
+Disallow: /gametips/
+Disallow: /onlinets/
+Disallow: /betking/
+Disallow: /gbet/
+Disallow: /bonustar/
+Disallow: /luckspin/
+Disallow: /jackgame/
+Disallow: /betplays/
+Disallow: /casiplay/
+Disallow: /rollspin/
+Disallow: /goldluck/
+Disallow: /virtuals/
+Disallow: /jackpots/
+Disallow: /prizebet/
+Disallow: /luckydom/
+Disallow: /playcash/
+Disallow: /jackgame/
+Disallow: /slotwins/
+Disallow: /wintable/
+Disallow: /gametips/
+Disallow: /vipbonus/
+Disallow: /maxbonus/
+Disallow: /jilihot-now/
+Disallow: /bigwin-29-casino-login-register/
+Disallow: /queen%20ph%C2%A0app/
+Disallow: /winners-club-casino/
+Disallow: /gcash-betting-sites/
+Disallow: /baccarat-rules/
+Disallow: /superace-15/
+Disallow: /luxebet/
+Disallow: /login-nice88-login/
+Disallow: /escala-login/
+Disallow: /4%C2%A0superph/
+Disallow: /crazy%20games%20y8/
+Disallow: /Lucky%20Clover%20Lady/
+Disallow: /king%20philip%205/
+Disallow: /okplay%C2%A0com%20gcash/
+
+
+Allow: /
+
+Sitemap: https://opcr.davaodeoro.gov.ph/sitemap.xml
+
