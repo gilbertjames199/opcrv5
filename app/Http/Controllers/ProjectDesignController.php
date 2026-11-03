@@ -50,6 +50,8 @@ class ProjectDesignController extends Controller
             ]
         );
         // dd($response->json());
+
+        /*
         if ($response->successful()) {
             $data = $response->json();
 
@@ -72,7 +74,7 @@ class ProjectDesignController extends Controller
             $msg = 'Failed to retrieve Budget Prep data';
             return redirect()->back()->with('error', $msg);
         }
-
+        */
         // 2️⃣ Proceed with cloning
         $result = $this->cloneRevisionPlan($id, $request->input('type'));
 
